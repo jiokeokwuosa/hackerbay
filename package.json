@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r esm src/",
-    "test": "nyc --reporter=text --reporter=html mocha --timeout 12000 -c -r esm --exit",
+    "test": "nyc --reporter=text --reporter=html mocha src/**/*.test.js --timeout 12000 -c -r esm --exit",
     "lint": "eslint src/**/* src/* --ext js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
