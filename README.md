@@ -1,6 +1,7 @@
 # hackerbay
 A simple stateless microservice in Nodejs, with three major functionalities - Authentication, JSON patching and Image Thumbnail Generation
-
+[![Build Status](https://travis-ci.org/jiokeokwuosa/hackerbay.svg?branch=develop)](https://travis-ci.org/jiokeokwuosa/hackerbay)
+[![Coverage Status](https://coveralls.io/repos/github/jiokeokwuosa/hackerbay/badge.svg?branch=develop)](https://coveralls.io/github/jiokeokwuosa/hackerbay?branch=develop)
 
 ## Required Features
 
