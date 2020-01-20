@@ -1,0 +1,221 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0",
+      "title": "Hackerbay",
+      "description": "A simple stateless microservice in Nodejs, with three major functionalities - Authentication, JSON patching and Image Thumbnail Generation"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000/"
+      },
+      {
+        "url": ""
+      }
+    ],
+    "host": "",
+    "basePath": "/api/v1",
+    "securityDefinitions": {
+      "Bearer": {
+        "description": "Standard Authorization header using the bearer scheme. Example: \"bearer {token}\"",
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Endpoints for Authentication"
+      },
+      {
+        "name": "Image",
+        "description": "Endpoints for Creating Thumbnail"
+      }      
+    ],
+    "paths": {    
+      "/auth/signin": {
+        "post": {
+          "description": "Logs in a user",
+          "summary": "Enables a user to login so as to have access to the App's features",
+          "tags": ["Auth"],
+          "produces": ["application/json","image/png","image/gif","image/jpg"],
+          "consumes":["application/json"],
+          "security": [],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "required": true,
+              "description": "This is the request body object containing user information",
+              "schema": {
+                "$ref": "#/components/schemas/requestBody/signinRequest"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully logged in user.",
+              "schema": {
+                "$ref": "#/components/schemas/responseBody/signinsuccess"
+              }
+            },           
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/components/schemas/responseBody/500"
+              }
+            }
+          }
+        }
+      },     
+      "/thumbnail": {
+        "post": {
+          "description": "Receives an image and create a thumbnail",
+          "summary": "Enables users to upload an image",
+          "tags": ["Image"],
+          "produces": ["application/json","image/png","image/gif","image/jpg"],
+          "security": ["Bearer"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "required": true,
+              "description": "It will contain the image URL",
+              "schema": {
+                "$ref": "#/components/schemas/requestBody/imageRequest"
+              }              
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved thumbnail",
+              "schema": {
+                "type":"file"
+              }
+            },
+            "401": {
+                "description": "Unauthenticated request",
+                "schema": {
+                  "$ref": "#/components/schemas/responseBody/401"
+                }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/components/schemas/responseBody/500"
+              }
+            }
+          }
+        }
+      }
+    },   
+    "components": {
+      "schemas": {
+        "requestBody": {          
+          "signinRequest": {
+            "title": "User Signin Request",
+            "type": "object",
+            "properties": {
+              "username": {
+                "description": "The username of the user",
+                "type": "string"
+              },
+              "password": {
+                "description": "The Password of the user",
+                "type": "string"
+              }
+            },
+            "example": {
+              "email": "jiokeokwuosa",
+              "password": "kjhk345345h"
+            },
+            "required": ["username, password"]
+          },
+          "imageRequest":{
+            "title": "User image Request",
+            "type": "object",
+            "properties": {
+              "imageUrl": {
+                "description": "The url of the uploaded image",
+                "type": "string"
+              }              
+            },
+            "example": {
+              "imageUrl": "iuyiuyi"            
+            },
+            "required": ["imageUrl"]
+          }         
+        },
+        "responseBody": {          
+          "signinsuccess": {
+            "properties": {
+              "status": {
+                "description": "successful",
+                "type": "string"
+              },
+              "data": {
+                "description": "An object containing properties of the newly logged in user",
+                "type": "object"
+              }
+            },
+            "example": {
+              "status": "success",
+              "data": {
+                "username": "maxwell",
+                "token": "8949y4dhiudfhh0doj0340"
+              }
+            }
+          },         
+          "401": {
+            "properties": {
+              "status": {
+                "description": "Authentication error, usually just the text: 'fail'",
+                "type": "string"
+              },
+              "error": {
+                "description": "An error object",
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "description": "A descriptive error message",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "error": {
+                "message": "Token is required"
+              }
+            }
+          },          
+          "500": {
+            "properties": {
+              "status": {
+                "description": "Server error, usually just the text: 'fail'",
+                "type": "string"
+              },
+              "error": {
+                "description": "An error object",
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "description": "A descriptive error message",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "error": {
+                "message": "Some error occurred, try again"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
