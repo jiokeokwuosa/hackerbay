@@ -1,15 +1,15 @@
 import jsonpatch from 'jsonpatch';
 /**
- *Contains Auth Controller
+ *Contains JsonPatchController Class
  *
  * @class JsonPatchController
  */
 class JsonPatchController {
   /**
    * Implements Json patch.
-   * @param {Request} req - Response object.
-   * @param {Response} res - The payload.
-   * @memberof AuthController
+   * @param {Request} req - Request object.
+   * @param {Response} res - Response object.
+   * @memberof JsonPatchController
    * @returns {JSON} - A JSON success response.
    */
   static async jsonPatch(req, res) {
