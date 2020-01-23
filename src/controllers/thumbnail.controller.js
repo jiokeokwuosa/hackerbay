@@ -18,10 +18,7 @@ class ThumbnailController {
     try {
       logger.info('we are good');
       const { url } = req.body;
-      UserUtility.downloadImage(url, 'myimage.png');
-      return res.status(200).json({
-        status: 'success'
-      });
+      UserUtility.downloadImage(url, 'myimage.png', res);
     } catch (err) {
       return res.status(500).json({
         status: '500 Internal server error',

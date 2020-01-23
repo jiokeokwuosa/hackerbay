@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import request from 'request';
-import resizeOptimizeImages from 'resize-optimize-images';
 import resizeImg from 'resize-img';
 import { join } from 'path';
-import logger from '../config/logger';
+
 
 /**
  *Contains Helper methods
@@ -35,21 +34,24 @@ class UserUtility {
    * @static
    * @param {string} url - The image URL.
    * @param {string} filename - The name of the file.
-   * @param {function} callback - The callback function.
+   * @param {function} res - The express res object.
    * @memberof UserUtility
    * @returns {null} - Returns nothing.
    */
-  static downloadImage(url, filename, callback) {
-    request(url).pipe(fs.createWriteStream(filename)).on('close', () => {
-      (async () => {
+  static async downloadImage(url, filename, res) {
+    return request(url)
+      .on('response')
+      .pipe(fs.createWriteStream(filename)).on('close', async () => {
         const options = {
-          width: 90,
-          height: 90
+          width: 50,
+          height: 50
         };
         const image = await resizeImg(fs.readFileSync(filename), options);
-        fs.writeFileSync('uni.png', image);
-      })();
-    });
+        const origin = join(__dirname, `../../${filename}`);
+        if (fs.existsSync(origin))fs.unlinkSync(origin);
+        res.set({ 'Content-Type': 'image/png' });
+        res.send(image);
+      });
   }
 }
 export default UserUtility;
