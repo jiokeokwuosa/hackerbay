@@ -4,6 +4,6 @@ import { validateToken } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.post('/', validateToken, ThumbnailController.thumbnail);
+router.post('/',validateToken, ThumbnailController.thumbnail);
 
 export default router;
